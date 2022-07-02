@@ -26,15 +26,17 @@ public class CarRentalParser {
     public void parse() {
         String command = null;
         do {
-            System.out.println("Command: [add,delete, returnCar]");
+            System.out.println("Command: [add,delete, list,return]");
             command = scanner.next();
 
             if (command.equalsIgnoreCase("add")) {
                 handleAddCommand();//
-            } else if (command.equalsIgnoreCase("returnCar")) {
+            } else if (command.equalsIgnoreCase("list")) {
                 handleListCommand();
             } else if (command.equalsIgnoreCase("delete")) {
                 handleDeleteCommand();
+            }else if( command.equalsIgnoreCase("return")){
+               handleReturnCommand();
 
             }
         } while (!command.equals("quit"));
@@ -49,7 +51,7 @@ public class CarRentalParser {
             Car car = carOptional.get();
             dao.deleteCar(car);
 
-            System.out.println("Car remover");
+            System.out.println("Car removed");
         } else {
             System.out.println("Car not found");
         }
@@ -65,6 +67,18 @@ public class CarRentalParser {
             System.out.println(car);
         }
         System.out.println();
+    }
+    private void handleReturnCommand(){
+        System.out.println("Provide id of the car u'dlike to remove");
+        Long id = scanner.nextLong();
+
+        Optional<Car> carOptional = dao.returnCar(id);
+        if (carOptional.isPresent()) {
+            Car car = carOptional.get();
+            System.out.println("Car found: " + car);
+        } else {
+            System.out.println("Car not found");
+        }
     }
 
 
